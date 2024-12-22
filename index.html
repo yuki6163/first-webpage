@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Resume Template</title>
+  <style>
+    /* Global Styles */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+
+    /* Form Container Styles */
+    form {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    fieldset {
+        border: none;
+        padding: 0;
+    }
+
+    legend {
+        font-size: 1.5em;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    input[type="text"], input[type="number"] {
+        width: 95%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1em;
+    }
+
+    button {
+        padding: 10px 15px;
+        margin-right: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007BFF;
+        color: white;
+        font-size: 1em;
+        cursor: pointer;
+    }
+
+    button[type="reset"] {
+        background-color: #6c757d;
+    }
+
+    button:hover {
+        opacity: 0.9;
+    }
+
+    .add-button {
+        display: block;
+        margin: 10px auto;
+        padding: 5px 15px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .add-button:hover {
+        background-color: #218838;
+    }
+
+    #resume-output {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        display: none;
+    }
+
+    h3 {
+        margin-top: 20px;
+    }
+
+    hr {
+        border: none;
+        border-top: 2px solid #ccc;
+        margin: 20px 0;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    table, th, td {
+        border: 1px solid #ccc;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+    }
+    .header-section {
+        display: flex;
+        align-items: center;
+        padding: 0px;
+        background-color: #2d2d2d; /* Dark Gray */
+        color: #ffffff;
+    }
+
+    /* Content Section */
+    .content-section {
+        padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  
+  <form id="resume-form">
+    <fieldset>
+      <legend>Personal Resume</legend>
+
+      <label for="fname">First name: </label>
+      <input type="text" id="fname" name="fname" required>
+
+      <label for="lname">Last name: </label>
+      <input type="text" id="lname" name="lname" required>
+
+      <label for="address">Address: </label>
+      <input type="text" id="address" name="address" required>
+
+      <label for="phone">Contact no: </label>
+      <input type="number" id="phone" name="phone" required>
+
+      <label for="summary">Professional Summary: </label>
+      <input type="text" id="summary" name="summary" required>
+
+      <label for="skills">Skills: </label>
+      <input type="text" id="skills" name="skills" required>
+
+      <label for="hobbies">Hobbies: </label>
+      <input type="text" id="hobbies" name="hobbies" required>
+
+      <label for="languages">Languages: </label>
+      <input type="text" id="languages" name="languages" required>
+
+      <div id="education-section">
+        <label>Education History: </label>
+        <input type="text" name="education" class="education-field" placeholder="e.g., BSc in Computer Science, XYZ University (2018-2022)" required>
+        <button type="button" class="add-button" onclick="addField('education-section', 'education-field')">Add Education</button>
+      </div><br>
+
+      <div id="employment-section">
+        <label>Employment History: </label>
+        <input type="text" name="employment" class="employment-field" placeholder="e.g., Software Engineer, ABC Corp (2022-2024)">
+        <button type="button" class="add-button" onclick="addField('employment-section', 'employment-field')">Add Employment</button>
+      </div><br>
+
+      <div id="honors-section">
+        <label>Honors: </label>
+        <input type="text" name="honors" class="honors-field" placeholder="e.g., Dean's List 2020">
+        <button type="button" class="add-button" onclick="addField('honors-section', 'honors-field')">Add Honor</button>
+      </div><br>
+      <button type="button" id="submit-btn">Submit</button>
+      <button type="reset">Reset</button>
+    </fieldset>
+  </form>
+
+  <div id="resume-output" class="resume-container" style="display:none;">
+    <header class="header-section">
+      <div class="name-section">
+        <h1 id="full-name"></h1>
+        <p id="contact-details"></p>
+      </div>
+    </header>
+
+    <hr>
+    <h3>Professional Summary</h3>
+    <p id="summary-output"></p>
+    <hr>
+    <h3>Skills</h3>
+    <p id="skills-output"></p>
+    <hr>
+    <h3>Hobbies</h3>
+    <p id="hobbies-output"></p>
+    <hr>
+    <h3>Languages</h3>
+    <p id="languages-output"></p>
+    <hr>
+    <h3>Education History</h3>
+    <table id="education-output">
+    </table>
+    <h3>Employment History</h3>
+    <table id="employment-output">
+    </table>
+    <h3>Honors</h3>
+    <table id="honors-output">
+    </table>
+  </div>
+
+  <script>
+    function addField(sectionId, className) {
+      const section = document.getElementById(sectionId);
+      const newField = document.createElement('input');
+      newField.type = 'text';
+      newField.name = className;
+      newField.classList.add(className);
+      newField.placeholder = "Add more details...";
+      section.insertBefore(newField, section.querySelector('.add-button'));
+    }
+
+    document.getElementById("submit-btn").addEventListener("click", function () {
+      const firstName = document.getElementById("fname").value;
+      const lastName = document.getElementById("lname").value;
+      const address = document.getElementById("address").value;
+      const phone = document.getElementById("phone").value;
+      const summary = document.getElementById("summary").value;
+      const skills = document.getElementById("skills").value;
+      const hobbies = document.getElementById("hobbies").value;
+      const languages = document.getElementById("languages").value;
+
+      const educationFields = document.querySelectorAll(".education-field");
+      const employmentFields = document.querySelectorAll(".employment-field");
+      const honorsFields = document.querySelectorAll(".honors-field");
+
+      document.getElementById("full-name").textContent = `${firstName} ${lastName}`;
+      document.getElementById("contact-details").textContent = `Address: ${address} | Phone: ${phone}`;
+      document.getElementById("summary-output").textContent = summary;
+      document.getElementById("skills-output").textContent = skills;
+      document.getElementById("hobbies-output").textContent = hobbies;
+      document.getElementById("languages-output").textContent = languages;
+
+      fillTable("education-output", educationFields);
+      fillTable("employment-output", employmentFields);
+      fillTable("honors-output", honorsFields);
+
+      document.getElementById("resume-output").style.display = "block";
+      document.getElementById("resume-form").style.display = "none";
+    });
+
+      function fillTable(tableId, fields) {
+      const table = document.getElementById(tableId);
+      table.innerHTML = '<tr><th>Details</th></tr>'; // Reset table content
+      fields.forEach(field => {
+        if (field.value.trim() !== "") { // Ensure non-empty entries
+          const row = document.createElement('tr');
+          const cell = document.createElement('td');
+          cell.textContent = field.value;
+          row.appendChild(cell);
+          table.appendChild(row);
+        }
+      });
+    }
+</script>
+mnn
+</body>
+</html>
